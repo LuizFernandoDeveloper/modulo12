@@ -1,74 +1,49 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Main {
-
     public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            Set<String> masculino = new HashSet<>();
+            Set<String> feminino = new HashSet<>();
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Type the names separated by commas.");
-        String names = sc.nextLine();
+            while (true) {
+                System.out.print("Digite o nome (ou 'sair' para encerrar): ");
+                String nome = scanner.nextLine();
+                if (nome.equalsIgnoreCase("sair")) {
+                    break;
+                }
 
-        List<String> listaNames = presentedNames(names);
-        Collections.sort(listaNames);
+                System.out.print("Digite o sexo (M/F): ");
+                String sexo = scanner.nextLine();
 
-        System.out.println("Names in alphabetical order.");
-        for (String name : listaNames) {
-            System.out.println(name);
-        }
-
-        System.out.println("Please, now enter the name with its gender.");
-        names = sc.nextLine();
-        List<Pessoas> genderNames = genderName(names);
-
-        System.out.println("People grouped by gender.");
-        printPeopleByGender(genderNames);
-
-    }
-
-    public static List<String> presentedNames(String names) {
-        String[] parts = names.split(",");
-        List<String> listNames = new ArrayList<>();
-        for (String part : parts) {
-            listNames.add(part.trim());
-        }
-        return listNames;
-    }
-
-    public static List<Pessoas> genderName(String names) {
-        String[] parts = names.split(",");
-        List<Pessoas> listGender = new ArrayList<>();
-        for (int i = 0; i < parts.length; i += 2) {
-            String name = parts[i].trim();
-            String sexo = parts[i + 1].trim();
-            listGender.add(new Pessoas(name, sexo));
-        }
-        return listGender;
-    }
-
-    public static void printPeopleByGender(List<Pessoas> genderNames) {
-        List<Pessoas> female = new ArrayList<>();
-        List<Pessoas> male = new ArrayList<>();
-
-        for (Pessoas person : genderNames) {
-            if (person.getSexo().equalsIgnoreCase("F")) {
-                female.add(person);
-            } else if (person.getSexo().equalsIgnoreCase("M")) {
-                male.add(person);
+                if (sexo.equalsIgnoreCase("M")) {
+                    masculino.add(nome);
+                } else if (sexo.equalsIgnoreCase("F")) {
+                    feminino.add(nome);
+                } else {
+                    System.out.println("Sexo inválido. Digite 'M' para masculino ou 'F' para feminino.");
+                }
             }
-        }
 
-        System.out.println("Female: ");
-        for (Pessoas person : female) {
-            System.out.println(person.getName());
+            System.out.println("\n--- Grupo Masculino ---");
+            if (!masculino.isEmpty()) {
+                for (String nome : masculino) {
+                    System.out.println(nome);
+                }
+            } else {
+                System.out.println("Nenhum nome masculino registrado.");
+            }
 
-        }
-
-        System.out.println("\nMale: ");
-        for (Pessoas person : male) {
-            System.out.println(person.getName());
+            System.out.println("\n--- Grupo Feminino ---");
+            if (!feminino.isEmpty()) {
+                for (String nome : feminino) {
+                    System.out.println(nome);
+                }
+            } else {
+                System.out.println("Nenhum nome feminino registrado.");
+            }
         }
     }
 }
